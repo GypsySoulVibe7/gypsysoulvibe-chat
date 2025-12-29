@@ -6,8 +6,9 @@
   <title>Lumi Rosaria Virelle Chat</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #fffbe6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a0a3d; /* Deep cosmic purple */
+      color: #e0c3fc; /* Soft lavender */
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -15,75 +16,114 @@
       padding: 0;
     }
     header {
-      background: #f7d94c;
+      background: linear-gradient(90deg, #7b2ff7, #f107a3); /* Purple to pink gradient */
       padding: 1rem;
       text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #4a3c00;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1.2px;
+      text-shadow: 0 0 8px #f107a3;
     }
     #chat {
       flex: 1;
       padding: 1rem;
       overflow-y: auto;
-      background: #fff;
-      border-top: 2px solid #f7d94c;
-      border-bottom: 2px solid #f7d94c;
+      background: #2e1a59; /* Dark purple */
+      border-top: 2px solid #f107a3;
+      border-bottom: 2px solid #7b2ff7;
+      box-shadow: inset 0 0 15px #7b2ff7;
+      border-radius: 0 0 20px 20px;
     }
     .message {
       margin-bottom: 1rem;
       max-width: 70%;
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 20px;
       clear: both;
+      font-size: 1rem;
+      line-height: 1.4;
+      box-shadow: 0 0 8px rgba(241, 7, 163, 0.6);
     }
     .user {
-      background: #f7d94c;
-      color: #4a3c00;
+      background: #f107a3; /* Pink */
+      color: #fff;
       float: right;
       text-align: right;
+      box-shadow: 0 0 12px #f107a3;
     }
     .bot {
-      background: #e0d47a;
-      color: #4a3c00;
+      background: #7b2ff7; /* Purple */
+      color: #fff;
       float: left;
       text-align: left;
+      box-shadow: 0 0 12px #7b2ff7;
     }
     #input-area {
       display: flex;
       padding: 1rem;
-      background: #f7d94c;
+      background: linear-gradient(90deg, #7b2ff7, #f107a3);
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 0 15px #f107a3;
     }
     #input-area input {
       flex: 1;
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1rem;
       border: none;
       border-radius: 20px;
       font-size: 1rem;
+      outline: none;
+      background: #3e2a7a;
+      color: #e0c3fc;
+      box-shadow: inset 0 0 8px #7b2ff7;
+      transition: background 0.3s ease;
+    }
+    #input-area input::placeholder {
+      color: #d9b8f9;
+    }
+    #input-area input:focus {
+      background: #5a3dbd;
+      box-shadow: inset 0 0 12px #f107a3;
     }
     #input-area button {
-      background: #4a3c00;
-      color: #fffbe6;
+      background: #fff;
+      color: #7b2ff7;
       border: none;
-      padding: 0 1rem;
+      padding: 0 1.2rem;
       margin-left: 0.5rem;
       border-radius: 20px;
       font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 0 12px #f107a3;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     #input-area button:disabled {
       background: #a9a9a9;
+      color: #5a3dbd;
       cursor: not-allowed;
+      box-shadow: none;
+    }
+    #input-area button:hover:not(:disabled) {
+      background: #f107a3;
+      color: #fff;
+      box-shadow: 0 0 20px #f107a3;
     }
     a.payhip-link {
       display: inline-block;
       margin-top: 0.5rem;
-      padding: 0.3rem 0.6rem;
-      background: #4a3c00;
-      color: #fffbe6;
-      border-radius: 12px;
+      padding: 0.4rem 0.8rem;
+      background: #f107a3;
+      color: #fff;
+      border-radius: 14px;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      box-shadow: 0 0 12px #f107a3;
+      transition: background 0.3s ease;
+    }
+    a.payhip-link:hover {
+      background: #7b2ff7;
+      box-shadow: 0 0 20px #7b2ff7;
     }
   </style>
 </head>
