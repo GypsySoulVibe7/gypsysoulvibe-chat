@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lumi Rosaria Virelle Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fffbe6;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #f7d94c;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4a3c00;
+    }
+    #chat {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      background: #fff;
+      border-top: 2px solid #f7d94c;
+      border-bottom: 2px solid #f7d94c;
+    }
+    .message {
+      margin-bottom: 1rem;
+      max-width: 70%;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      clear: both;
+    }
+    .user {
+      background: #f7d94c;
+      color: #4a3c00;
+      float: right;
+      text-align: right;
+    }
+    .bot {
+      background: #e0d47a;
+      color: #4a3c00;
+      float: left;
+      text-align: left;
+    }
+    #input-area {
+      display: flex;
+      padding: 1rem;
+      background: #f7d94c;
+    }
+    #input-area input {
+      flex: 1;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+    }
+    #input-area button {
+      background: #4a3c00;
+      color: #fffbe6;
+      border: none;
+      padding: 0 1rem;
+      margin-left: 0.5rem;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #input-area button:disabled {
+      background: #a9a9a9;
+      cursor: not-allowed;
+    }
+    a.payhip-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.6rem;
+      background: #4a3c00;
+      color: #fffbe6;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>Lumi Rosaria Virelle 🌻 Your AI Spiritual Guide</header>
+  <div id="chat"></div>
+  <form id="input-area">
+    <input type="text" id="user-input" placeholder="Ask Lumi anything..." autocomplete="off" />
+    <button type="submit" disabled>Send</button>
+  </form>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('user-input');
+    const button = input.nextElementSibling;
+
+    input.addEventListener('input', () => {
+      button.disabled = input.value.trim() === '';
+    });
+
+    const payhipLinks = {
+      booking: 'https://payhip.com/your-booking-link', // Replace with your PayHip booking URL
+      digitalProduct: 'https://payhip.com/your-digital-product-link' // Replace with your PayHip product URL
+    };
+
+    function addMessage(text, sender = 'bot') {
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      msg.innerHTML = text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function sendMessage(message) {
+      addMessage(message, 'user');
+
+      // Placeholder API call - replace URL with your Abacus API endpoint
+      const apiUrl = 'https://api.abacus.ai/your-lumi-endpoint'; // Replace with your actual API URL
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+
+        // Example: If API returns special commands for booking or product links
+        if (data.intent === 'booking') {
+          addMessage(data.reply + `<br><a href="${payhipLinks.booking}" target="_blank" class="payhip-link">Book a Session</a>`);
+        } else if (data.intent === 'buy_product') {
+          addMessage(data.reply + `<br><a href="${payhipLinks.digitalProduct}" target="_blank" class="payhip-link">Buy Digital Product</a>`);
+        } else {
+          addMessage(data.reply);
+        }
+      } catch (error) {
+        addMessage('Sorry, Lumi is having trouble right now. Please try again later.');
+      }
+    }
+
+    document.getElementById('input-area').addEventListener('submit', e => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (message) {
+        sendMessage(message);
+        input.value = '';
+        button.disabled = true;
+      }
+    });
+
+    // Welcome message
+    addMessage('Hello! I’m Lumi 🌻 How can I assist you today? You can ask to book a session or buy digital products.');
+  </script>
+</body>
+</html>
