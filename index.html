@@ -1,197 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lumi Rosaria Virelle Chat</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lumi Rosaria Virelle — Chat</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #1a0a3d; /* Deep cosmic purple */
-      color: #e0c3fc; /* Soft lavender */
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
+    /* --- Page background / layout --- */
+    :root{
+      --bg-deep:#120826;
+      --panel:#2e1a59;
+      --glow-p:#f107a3;
+      --glow-v:#7b2ff7;
+      --accent:#e0c3fc;
+      --input-bg:#3e2a7a;
+      --bot:#7b2ff7;
+      --user:#f107a3;
     }
-    header {
-      background: linear-gradient(90deg, #7b2ff7, #f107a3); /* Purple to pink gradient */
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 1.2px;
-      text-shadow: 0 0 8px #f107a3;
+    html,body{height:100%;margin:0;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg-deep);color:var(--accent);}
+    .wrap{display:flex;flex-direction:column;height:100vh;gap:12px;padding:0 20px 20px;}
+
+    /* --- Header --- */
+    header{
+      display:flex;align-items:center;gap:14px;justify-content:center;
+      background:linear-gradient(90deg,var(--glow-v),var(--glow-p));
+      padding:14px;border-radius:8px;color:white;font-weight:800;letter-spacing:0.6px;
+      box-shadow:0 6px 20px rgba(123,47,247,0.15),inset 0 -3px 8px rgba(241,7,163,0.08);
     }
-    #chat {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      background: #2e1a59; /* Dark purple */
-      border-top: 2px solid #f107a3;
-      border-bottom: 2px solid #7b2ff7;
-      box-shadow: inset 0 0 15px #7b2ff7;
-      border-radius: 0 0 20px 20px;
-    }
-    .message {
-      margin-bottom: 1rem;
-      max-width: 70%;
-      padding: 0.6rem 1.2rem;
-      border-radius: 20px;
-      clear: both;
-      font-size: 1rem;
-      line-height: 1.4;
-      box-shadow: 0 0 8px rgba(241, 7, 163, 0.6);
-    }
-    .user {
-      background: #f107a3; /* Pink */
-      color: #fff;
-      float: right;
-      text-align: right;
-      box-shadow: 0 0 12px #f107a3;
-    }
-    .bot {
-      background: #7b2ff7; /* Purple */
-      color: #fff;
-      float: left;
-      text-align: left;
-      box-shadow: 0 0 12px #7b2ff7;
-    }
-    #input-area {
-      display: flex;
-      padding: 1rem;
-      background: linear-gradient(90deg, #7b2ff7, #f107a3);
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 0 15px #f107a3;
-    }
-    #input-area input {
-      flex: 1;
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 20px;
-      font-size: 1rem;
-      outline: none;
-      background: #3e2a7a;
-      color: #e0c3fc;
-      box-shadow: inset 0 0 8px #7b2ff7;
-      transition: background 0.3s ease;
-    }
-    #input-area input::placeholder {
-      color: #d9b8f9;
-    }
-    #input-area input:focus {
-      background: #5a3dbd;
-      box-shadow: inset 0 0 12px #f107a3;
-    }
-    #input-area button {
-      background: #fff;
-      color: #7b2ff7;
-      border: none;
-      padding: 0 1.2rem;
-      margin-left: 0.5rem;
-      border-radius: 20px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 0 12px #f107a3;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-    #input-area button:disabled {
-      background: #a9a9a9;
-      color: #5a3dbd;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-    #input-area button:hover:not(:disabled) {
-      background: #f107a3;
-      color: #fff;
-      box-shadow: 0 0 20px #f107a3;
-    }
-    a.payhip-link {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.4rem 0.8rem;
-      background: #f107a3;
-      color: #fff;
-      border-radius: 14px;
-      text-decoration: none;
-      font-size: 0.95rem;
-      box-shadow: 0 0 12px #f107a3;
-      transition: background 0.3s ease;
-    }
-    a.payhip-link:hover {
-      background: #7b2ff7;
-      box-shadow: 0 0 20px #7b2ff7;
+    header img.logo{height:44px;width:auto;filter:drop-shadow(0 4px 12px rgba(241,7,163,0.25));border-radius:6px;}
+
+    /* --- Chat area --- */
+    main#chat-area{flex:1;display:flex;flex-direction:column;gap:12px;background:var(--panel);border-radius:12px;padding:18px;box-shadow:inset 0 0 40px rgba(123,47,247,0.08);overflow:auto;}
+    .message{display:inline-block;padding:12px 18px;border-radius:28px;max-width:72%;line-height:1.4;margin-bottom:12px}
+    .bot{background:var(--bot);color:#fff;box-shadow:0 6px 30px rgba(123,47,247,0.18);}
+    .user{background:var(--user);color:#fff;box-shadow:0 6px 30px rgba(241,7,163,0.18);margin-left:auto;}
+
+    /* --- Input area --- */
+    form#input-area{display:flex;gap:10px;align-items:center;padding:14px;background:linear-gradient(90deg,var(--glow-v),var(--glow-p));border-radius:12px;}
+    #user-input{flex:1;padding:12px 16px;border-radius:24px;border:none;background:var(--input-bg);color:var(--accent);outline:none;box-shadow:inset 0 0 14px rgba(123,47,247,0.08)}
+    #user-input::placeholder{color:#d9b8f9}
+    button#send-btn{background:#fff;color:var(--glow-v);border:none;padding:10px 18px;border-radius:20px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(241,7,163,0.14)}
+    button#send-btn[disabled]{opacity:0.55;cursor:not-allowed}
+
+    /* small screens */
+    @media(max-width:560px){
+      header{font-size:16px;padding:12px}
+      .message{max-width:86%}
     }
   </style>
 </head>
 <body>
-  <header>Lumi Rosaria Virelle 🌻 Your AI Spiritual Guide</header>
-  <div id="chat"></div>
-  <form id="input-area">
-    <input type="text" id="user-input" placeholder="Ask Lumi anything..." autocomplete="off" />
-    <button type="submit" disabled>Send</button>
-  </form>
+  <div class="wrap">
+    <header>
+      <!-- Replace logo URL if you want to host it in your repo (recommended) -->
+      <img class="logo" src="https://i.imgur.com/6QZq6qX.png" alt="Lumi Rosaria Virelle logo" />
+      Lumi Rosaria Virelle — Your AI Spiritual Guide
+    </header>
+
+    <main id="chat-area" role="log" aria-live="polite">
+      <!-- Chat messages appended here -->
+    </main>
+
+    <form id="input-area" autocomplete="off">
+      <input id="user-input" placeholder="Ask Lumi anything — sessions, products, or spiritual guidance..." />
+      <button id="send-btn" type="submit" disabled>Send</button>
+    </form>
+  </div>
 
   <script>
-    const chat = document.getElementById('chat');
+    /* ---------- Frontend chat UI logic ---------- */
+    const chatArea = document.getElementById('chat-area');
     const input = document.getElementById('user-input');
-    const button = input.nextElementSibling;
+    const sendBtn = document.getElementById('send-btn');
 
-    input.addEventListener('input', () => {
-      button.disabled = input.value.trim() === '';
-    });
+    input.addEventListener('input', () => sendBtn.disabled = input.value.trim() === '');
 
-    const payhipLinks = {
-      booking: 'https://payhip.com/your-booking-link', // Replace with your PayHip booking URL
-      digitalProduct: 'https://payhip.com/your-digital-product-link' // Replace with your PayHip product URL
-    };
-
-    function addMessage(text, sender = 'bot') {
-      const msg = document.createElement('div');
-      msg.classList.add('message', sender);
-      msg.innerHTML = text;
-      chat.appendChild(msg);
-      chat.scrollTop = chat.scrollHeight;
+    function appendMessage(text, who='bot'){
+      const el = document.createElement('div');
+      el.className = 'message ' + (who==='user'?'user':'bot');
+      el.innerHTML = text;
+      chatArea.appendChild(el);
+      chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    async function sendMessage(message) {
-      addMessage(message, 'user');
-
-      // Placeholder API call - replace URL with your Abacus API endpoint
-      const apiUrl = 'https://api.abacus.ai/your-lumi-endpoint'; // Replace with your actual API URL
-
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message })
+    async function sendToServer(text){
+      // POST to serverless function (Netlify). Replace path if you use different hosting.
+      const endpoint = '/.netlify/functions/chat';
+      try{
+        const res = await fetch(endpoint, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ message: text })
         });
-        const data = await response.json();
-
-        // Example: If API returns special commands for booking or product links
-        if (data.intent === 'booking') {
-          addMessage(data.reply + `<br><a href="${payhipLinks.booking}" target="_blank" class="payhip-link">Book a Session</a>`);
-        } else if (data.intent === 'buy_product') {
-          addMessage(data.reply + `<br><a href="${payhipLinks.digitalProduct}" target="_blank" class="payhip-link">Buy Digital Product</a>`);
-        } else {
-          addMessage(data.reply);
+        if(!res.ok){
+          const t = await res.text();
+          throw new Error(t || 'server error');
         }
-      } catch (error) {
-        addMessage('Sorry, Lumi is having trouble right now. Please try again later.');
+        const payload = await res.json();
+        // payload should be { reply: "...", intent: "booking" } or similar
+        return payload;
+      }catch(err){
+        console.error('Chat proxy error:', err);
+        throw err;
       }
     }
 
-    document.getElementById('input-area').addEventListener('submit', e => {
-      e.preventDefault();
-      const message = input.value.trim();
-      if (message) {
-        sendMessage(message);
-        input.value = '';
-        button.disabled = true;
+    async function handleSend(text){
+      appendMessage(escapeHtml(text),'user');
+      try{
+        const data = await sendToServer(text);
+        if(data && data.intent === 'booking'){
+          appendMessage(escapeHtml(data.reply) + `<br><a href="${data.booking_url || '#'}" class="pay-link" target="_blank">Book a session</a>`);
+        } else if(data && data.intent === 'buy'){
+          appendMessage(escapeHtml(data.reply) + `<br><a href="${data.product_url || '#'}" class="pay-link" target="_blank">Buy product</a>`);
+        } else {
+          appendMessage(escapeHtml(data.reply || 'Lumi is quiet right now — try again in a moment.'));
+        }
+      }catch(e){
+        appendMessage('Sorry, Lumi is having trouble right now. Please try again later.');
       }
+    }
+
+    document.getElementById('input-area').addEventListener('submit', e=>{
+      e.preventDefault();
+      const text = input.value.trim();
+      if(!text) return;
+      input.value = ''; sendBtn.disabled = true;
+      handleSend(text);
     });
 
-  addMessage('Hello! I’m Lumi Rosaria Virelle — Your AI Spiritual Guide. How can I assist you today? You can ask to book a session or buy digital products.');
+    // small utility
+    function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[c]); }
+
+    /* ---------- Initial welcome message (no sunflower) ---------- */
+    appendMessage('Hello! I’m Lumi Rosaria Virelle — your AI Spiritual Guide. How can I assist you today? You can ask to book a session or buy digital products.');
+  </script>
+</body>
+</html>
